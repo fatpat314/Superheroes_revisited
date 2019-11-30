@@ -136,10 +136,12 @@ class Weapon(Ability):
         between one half to the full attack power of the weapon.
         """
         # TODO: Use integer division to find half of the max_damage value
-        half_attack_strength = self.attack_strength / 2
-        # then return a random integer between half of max_damage and max_damage
-        rand_half_attack_strength = random.randint(0, half_attack_strength)
-        return rand_half_attack_strength
+        # half_attack_strength = self.attack_strength / 2
+        # # then return a random integer between half of max_damage and max_damage
+        # rand_half_attack_strength = random.randint(0, half_attack_strength)
+        # return rand_half_attack_strength
+
+        return random.randint(self.attack_strength//2, self.attack_strength)
 
 class Team():
     def __init__ (self, name):
@@ -153,18 +155,25 @@ class Team():
         self.heroes.append(hero)
 
     def remove_hero(self, name):
-        foundHero = False
-        # loop through each hero in our list
+        '''I could not get the given code to pass the test. But I think this formula works'''
+        # foundHero = False
+        # # loop through each hero in our list
+        # for hero in self.heroes:
+        #     #if we find them, remove them from the list
+        #     if hero.name == name:
+        #         self.heroes.remove(hero)
+        #         #set our indicator to True
+        #         foundHero = True
+        #     #if we looped through out list and did not fond our hero,
+        #     #The indicator would have never changed, so return 0
+        #     if not foundHero:
+        #         return 0
+
         for hero in self.heroes:
-            #if we find them, remove them from the list
-            if hero.name == name:
+            if name in hero.name:
                 self.heroes.remove(hero)
-                #set our indicator to True
-                foundHero = True
-            #if we looped through out list and did not fond our hero,
-            #The indicator would have never changed, so return 0
-            if not foundHero:
-                return 0
+                return 1
+        return 0
 
     def view_all_heroes(self):
         """ Prints out all heroes to the console """
