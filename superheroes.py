@@ -348,15 +348,15 @@ class Arena:
         # printing their names and increasing the count if they're alive.
 
         alive_count_one = 0
-        for i in self.team_one:
-            if heroes.is_alive():
-                print(hero_name)
+        for hero in self.team_one.heroes:
+            if hero.is_alive():
+                print(hero.name)
                 alive_count_one += 1
 
         alive_count_two = 0
-        for i in self.team_two:
-            if heroes.is_alive():
-                print(hero_name)
+        for hero in self.team_two.heroes:
+            if hero.is_alive():
+                print(hero.name)
                 alive_count_two += 1
 
 
