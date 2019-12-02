@@ -90,7 +90,7 @@ class Hero:
         #TODO: Fight each hero until a victor emerges.
         # Phases to implement:
         # 0) check if at least one hero has abilities. If no hero has abilities, print "Draw"
-        if len(opponent.abilities) and len(self.abilities) <= 0:
+        if len(opponent.abilities) == 0 and len(self.abilities) == 0:
             print("DRAW")
         # 1) else, start the fighting loop until a hero has won
         else:
@@ -100,16 +100,17 @@ class Hero:
 
         # 2) the hero (self) and their opponent must attack each other and each must take damage from the other's attack
         # 3) After each attack, check if either the hero (self) or the opponent is alive
-                if self.current_health > 0:
-                    print(f"{self.name} won")
-                    self.add_kill(1)
-                    opponent.add_death(1)
+        if self.current_health <= 0:
+            print(f"{opponent.name} won")
+            self.add_kill(1)
+            opponent.add_death(1)
 
-                else:
-                    opponent.current_health > 0
-                    print(f"{hero2.name} won")
-                    opponent.add_kill(1)
-                    self.add_death(1)
+        elif opponent.current_health <= 0:
+            print(f"{self.name} won")
+            opponent.add_kill(1)
+            self.add_death(1)
+        else:
+            pass
 
         # 4) if one of them has died, print "HeroName won!" replacing HeroName with the name of the hero, and end the fight loop
 
@@ -221,22 +222,169 @@ class Team():
             else:
                 living_opponents.remove(opponent1)
 
+    def surviving_heroes(self):
+        for hero in self.heroes:
+            if hero.is_alive():
+                print(hero.name)
+
+class Arena:
+    def __init__(self):
+        '''Instantiate properties'''
+        self.team_one = Team("Team one")
+        self.team_two = Team("Team two")
+
+    def create_ability(self):
+        '''Prompt for Ability information
+            return Ability with values from user Input'''
+
+        name = input("What is the ability name? ")
+        attack_strength = input("What is the attack strength of the ability? ")
+
+        return Ability(name, int(attack_strength))
+
+    def create_weapon(self):
+        '''Prompt user for Weapon information
+            return Weapon with values from user input.'''
+        weapon_name = input("Name your weapon: ")
+        weapon_attack_strength = input("What is the attack strength of the weapon? ")
+
+        return Weapon(weapon_name, int(attack_strength))
+
+    def create_armor(self):
+        '''Prompt user for Armor information'''
+        armor_name = input("Name your Armor: ")
+        max_block = input("Set the maximum strength of your armor: ")
+
+        return Armor(armor_name, int(max_block))
+
+    def create_hero(self):
+        '''Prompt user for Hero information
+        return Hero with vlues from user input.'''
+        hero_name = input("Hero's name: ")
+        hero = Hero(hero_name)
+        add_item = None
+        while add_item != "4":
+            add_item = input("[1] Add ability\n[2] Add weapon\n[3] Add armor\n[4] Done adding items\n\nYour choice: ")
+            if add_item == "1":
+                #TODO ad an ability to the hero
+                ability = self.create_ability()
+                hero.add_ability(ability)
+
+            elif add_item == "2":
+                weapon = self.create_weapon()
+                hero.add_weapon(weapon)
+
+            elif add_item == "3":
+                armor = self.create_armor()
+                hero.add_armor(armor)
+        return hero
+
+    def build_team_one(self):
+        '''Prompt the user to build team_one '''
+        # TODO: This method should allow a user to create team one.
+        # 1) Prompt the user for the name of the team
+        team_one_name = input("Name your first team: ")
+        self.team_one.name = team_one_name
+        # 2) Prompt the user for the number of Heroes on the team
+        number_of_heroes = int(input("Enter a number for the amount of heroes you would like in your first team: "))
+        # 3) Instantiate a new Team object,
+        # using the team name obtained from user input
+        for i in range(0, number_of_heroes):
+            hero = self.create_hero()
+            print(hero.name)
+            self.team_one.add_hero(hero)
+        # 4) use a loop to call self.create_hero() for the number
+        # of heroes the user specified the team should have,
+        # and then add the heroes to the team.
+
+
+    def build_team_two(self):
+        '''Prompt the user to build team_one '''
+        # TODO: This method should allow a user to create team one.
+        # 1) Prompt the user for the name of the team
+        team_two_name = input("Name your second team: ")
+        self.team_two.name = team_two_name
+        # 2) Prompt the user for the number of Heroes on the team
+        number_of_heroes2 = int(input("Enter a number for the amount of heroes you would like in your second team: "))
+        # 3) Instantiate a new Team object,
+        # using the team name obtained from user input
+        # 4) use a loop to call self.create_hero() for the number
+        # of heroes the user specified the team should have,
+        # and then add the heroes to the team.
+        for i in range(0, number_of_heroes2):
+            hero = self.create_hero()
+            print(hero.name)
+            self.team_two.add_hero(hero)
+    def team_battle(self):
+        # TODO: This method should battle the teams together.
+        # Call the attack method that exists in your team objects
+        # for that battle functionality.
+        for hero in self.team_one.heroes:
+            random_opponent_number = random.randrange(0,len(self.team_two.heroes))
+            hero.fight(self.team_two.heroes[random_opponent_number])
+
+    def show_stats(self):
+        '''Prints team statistics to terminal.'''
+        # TODO: This method should print out battle statistics
+        # including each team's average kill/death ratio.
+        # Required Stats:
+        #     Show surviving heroes.
+        self.team_one.surviving_heroes()
+        self.team_two.surviving_heroes()
+
+        #     Declare winning team
+        if self.team_one.surviving_heroes() == True:
+            print(self.team_one.name)
+
+        else:
+            print(self.team_two.name)
 
 
 
+        # Show both teams average kill/death ratio.
+        # Some help on how to achieve these tasks:
+        # TODO: for each team, loop through all of their heroes,
+        # and use the is_alive() method to check for alive heroes,
+        # printing their names and increasing the count if they're alive.
+
+        alive_count_one = 0
+        for i in self.team_one:
+            if heroes.is_alive():
+                print(hero_name)
+                alive_count_one += 1
+
+        alive_count_two = 0
+        for i in self.team_two:
+            if heroes.is_alive():
+                print(hero_name)
+                alive_count_two += 1
 
 
 
-
+        #
+        # TODO: based off of your count of alive heroes,
+        # you can see which team has more alive heroes, and therefore,
+        # declare which team is the winning team
+        #
+        # TODO for each team, calculate the total kills and deaths for each hero,
+        # find the average kills and deaths by dividing the totals by the number of heroes.
+        # finally, divide the average number of kills by the average number of deaths for each team
+    pass
 
 
 if __name__ == "__main__":
 
-    hero = Hero("Wonder Woman")
-    weapon = Weapon("Lasso of Truth", 90)
-    hero.add_weapon(weapon)
+    arena = Arena()
+    arena.build_team_one()
+    arena.build_team_two()
+    arena.team_battle()
+    arena.show_stats()
 
-    print(hero.attack())
+    # hero = Hero("Wonder Woman")
+    # weapon = Weapon("Lasso of Truth", 90)
+    # hero.add_weapon(weapon)
+    #
+    # print(hero.attack())
     # hero1 = Hero("Wonder Woman")
     # hero2 = Hero("Dumbledore")
     # ability1 = Ability("Super Speed", 300)
