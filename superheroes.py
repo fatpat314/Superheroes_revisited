@@ -248,7 +248,7 @@ class Arena:
         weapon_name = input("Name your weapon: ")
         weapon_attack_strength = input("What is the attack strength of the weapon? ")
 
-        return Weapon(weapon_name, int(attack_strength))
+        return Weapon(weapon_name, int(weapon_attack_strength))
 
     def create_armor(self):
         '''Prompt user for Armor information'''
@@ -350,25 +350,74 @@ class Arena:
         alive_count_one = 0
         for hero in self.team_one.heroes:
             if hero.is_alive():
-                print(hero.name)
+                print(f"{hero.name} is still alive")
                 alive_count_one += 1
 
         alive_count_two = 0
         for hero in self.team_two.heroes:
             if hero.is_alive():
-                print(hero.name)
+                print(f"{hero.name} is still alive")
                 alive_count_two += 1
 
-
-
-        #
         # TODO: based off of your count of alive heroes,
         # you can see which team has more alive heroes, and therefore,
         # declare which team is the winning team
+        if alive_count_one > alive_count_two:
+            print(f"{self.team_one.name} are the winner!!!")
+
+        else:
+            print(f"{self.team_two.name} are the winner!!!")
+
         #
         # TODO for each team, calculate the total kills and deaths for each hero,
         # find the average kills and deaths by dividing the totals by the number of heroes.
         # finally, divide the average number of kills by the average number of deaths for each team
+        sum_deaths_one = 0
+        sum_kills_one = 0
+
+        sum_deaths_two = 0
+        sum_kills_two = 0
+
+        for hero in self.team_one.heroes:
+            sum_kills_one += hero.kills
+            sum_deaths_one += hero.deaths
+
+        for hero in self.team_two.heroes:
+            sum_kills_two += hero.kills
+            sum_deaths_two += hero.deaths
+
+        num_heroes_one = len(self.team_one.heroes)
+        num_heroes_two = len(self.team_two.heroes)
+
+
+        average_kills_team_one = sum_kills_one/num_heroes_one
+        average_kills_team_two = sum_kills_two/num_heroes_two
+
+        average_deaths_team_one = sum_deaths_one/num_heroes_one
+        average_deaths_team_two = sum_deaths_two/num_heroes_two
+
+        if average_kills_team_one or average_deaths_team_one == 0:
+            kdr_team_one = 0
+        else:
+            kdr_team_one = average_kills_team_one/average_deaths_team_one
+        if average_kills_team_two or average_deaths_team_two == 0:
+            kdr_team_two = 0
+        else:
+            kdr_team_two = average_kills_team_two/average_deaths_team_two
+
+
+
+        print(kdr_team_one)
+        print(kdr_team_two)
+
+
+
+        # # print(hero.stats)
+        # print(self.team_one.stats)
+        # print(hero.kills)
+        # print(hero.deaths)
+
+
     pass
 
 
